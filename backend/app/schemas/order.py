@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import Optional
+from typing import Optional, List
 
 
 class OrderStatus(str, Enum):
@@ -11,17 +11,24 @@ class OrderStatus(str, Enum):
     COMPLETED = "Completed"
 
 
+class OrderItemResponse(BaseModel):
+    id: int
+    product_id: int
+    product_name: str
+    quantity: int
+    unit_price: Decimal
+    total_price: Decimal
+
+    class Config:
+        from_attributes = True
+
+
 class OrderCreate(BaseModel):
     order_number: str
-    num_products: int = 0
-    final_price: Decimal = Decimal("0.00")
-    status: OrderStatus = OrderStatus.PENDING
 
 
 class OrderUpdate(BaseModel):
     order_number: Optional[str] = None
-    num_products: Optional[int] = None
-    final_price: Optional[Decimal] = None
     status: Optional[OrderStatus] = None
 
 
@@ -38,3 +45,7 @@ class OrderResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class OrderDetailResponse(OrderResponse):
+    items: List[OrderItemResponse] = []

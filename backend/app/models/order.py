@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, Numeric, Enum, Boolean
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 from app.core.database import Base
 import enum
 
@@ -22,3 +23,5 @@ class Order(Base):
     is_deleted = Column(Boolean, default=False)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+
+    items = relationship("OrderProduct", back_populates="order", cascade="all, delete-orphan")

@@ -99,7 +99,7 @@ export default function MyOrders() {
                   </select>
                 </td>
                 <td>
-                  <Link to={`/edit-order/${order.id}`}>Edit</Link>
+                  <Link to={`/add-order/${order.id}`}>Edit</Link>
                   {' '}
                   <button onClick={() => setDeleteId(order.id)}>Delete</button>
                 </td>
