@@ -74,23 +74,24 @@ export default function Products() {
   return (
     <div>
       <h1>Products</h1>
-      <button onClick={() => setShowForm(true)}>Add Product</button>
+      <button className="btn-primary" onClick={() => setShowForm(true)}>+ New Product</button>
       <br /><br />
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="error">{error}</p>}
 
       {showForm && (
-        <div style={{ border: '1px solid black', padding: '10px', marginBottom: '10px' }}>
+        <div className="modal">
           <h3>{editingProduct ? 'Edit Product' : 'Add Product'}</h3>
-          <div>
-            <label>Name: </label>
+          <div className="form-group">
+            <label>Name</label>
             <input
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              placeholder="Enter product name"
             />
           </div>
-          <div>
-            <label>Unit Price: </label>
+          <div className="form-group">
+            <label>Unit Price</label>
             <input
               type="number"
               value={formData.unit_price}
@@ -100,20 +101,21 @@ export default function Products() {
             />
           </div>
           <br />
-          <button onClick={handleSubmit}>{editingProduct ? 'Save' : 'Create'}</button>
+          <button className="btn-primary" onClick={handleSubmit}>{editingProduct ? 'Save' : 'Create'}</button>
           <button onClick={resetForm}>Cancel</button>
         </div>
       )}
 
       {deleteId && (
-        <div style={{ border: '1px solid black', padding: '10px', marginBottom: '10px' }}>
+        <div className="modal">
+          <h3>Confirm Delete</h3>
           <p>Are you sure you want to delete this product?</p>
-          <button onClick={handleDelete}>Yes, Delete</button>
+          <button className="btn-danger" onClick={handleDelete}>Yes, Delete</button>
           <button onClick={() => setDeleteId(null)}>Cancel</button>
         </div>
       )}
 
-      <table border={1}>
+      <table>
         <thead>
           <tr>
             <th>ID</th>

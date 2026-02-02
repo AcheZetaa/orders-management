@@ -51,19 +51,22 @@ export default function MyOrders() {
   return (
     <div>
       <h1>My Orders</h1>
-      <Link to="/add-order">Add Order</Link>
+      <button className="btn-primary" onClick={() => window.location.href = '/add-order'}>
+        + New Order
+      </button>
       <br /><br />
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="error">{error}</p>}
 
       {deleteId && (
-        <div style={{ border: '1px solid black', padding: '10px', marginBottom: '10px' }}>
+        <div className="modal">
+          <h3>Confirm Delete</h3>
           <p>Are you sure you want to delete order #{deleteId}?</p>
-          <button onClick={handleDelete}>Yes, Delete</button>
+          <button className="btn-danger" onClick={handleDelete}>Yes, Delete</button>
           <button onClick={() => setDeleteId(null)}>Cancel</button>
         </div>
       )}
 
-      <table border={1}>
+      <table>
         <thead>
           <tr>
             <th>ID</th>

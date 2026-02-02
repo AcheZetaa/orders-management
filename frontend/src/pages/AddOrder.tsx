@@ -114,21 +114,22 @@ export default function AddOrder() {
     return (
       <div>
         <h1>Add Order</h1>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <div>
-          <label>Order Number: </label>
+        {error && <p className="error">{error}</p>}
+        <div className="form-group">
+          <label>Order Number</label>
           <input
             type="text"
             value={orderNumber}
             onChange={(e) => setOrderNumber(e.target.value)}
+            placeholder="Enter order number"
           />
         </div>
-        <div>
-          <label>Date: </label>
+        <div className="form-group">
+          <label>Date</label>
           <input type="text" value={new Date().toLocaleDateString()} disabled />
         </div>
         <br />
-        <button onClick={handleCreateOrder} disabled={saving}>
+        <button className="btn-primary" onClick={handleCreateOrder} disabled={saving}>
           {saving ? 'Creating...' : 'Create Order'}
         </button>
         <button onClick={() => navigate('/my-orders')}>Cancel</button>
@@ -139,73 +140,74 @@ export default function AddOrder() {
   return (
     <div>
       <h1>Edit Order #{order.id}</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {isCompleted && <p style={{ color: 'orange' }}>This order is completed and cannot be modified.</p>}
+      {error && <p className="error">{error}</p>}
+      {isCompleted && <p className="warning">This order is completed and cannot be modified.</p>}
 
-      <div>
-        <label>Order Number: </label>
+      <div className="form-group">
+        <label>Order Number</label>
         <input type="text" value={order.order_number} disabled />
       </div>
-      <div>
-        <label>Date: </label>
+      <div className="form-group">
+        <label>Date</label>
         <input type="text" value={new Date(order.date).toLocaleDateString()} disabled />
       </div>
-      <div>
-        <label># Products: </label>
+      <div className="form-group">
+        <label># Products</label>
         <input type="number" value={order.num_products} disabled />
       </div>
-      <div>
-        <label>Final Price: </label>
+      <div className="form-group">
+        <label>Final Price</label>
         <input type="text" value={`$${Number(order.final_price).toFixed(2)}`} disabled />
       </div>
 
       <br />
       {!isCompleted && (
-        <button onClick={() => setShowModal(true)}>Add Product</button>
+        <button className="btn-primary" onClick={() => setShowModal(true)}>+ Add Product</button>
       )}
 
       {showModal && (
-        <div style={{ border: '1px solid black', padding: '10px', margin: '10px 0' }}>
+        <div className="modal">
           <h3>Add Product</h3>
-          <div>
-            <label>Product: </label>
+          <div className="form-group">
+            <label>Product</label>
             <select value={selectedProduct} onChange={(e) => setSelectedProduct(Number(e.target.value))}>
               {products.map(p => (
                 <option key={p.id} value={p.id}>{p.name} - ${Number(p.unit_price).toFixed(2)}</option>
               ))}
             </select>
           </div>
-          <div>
-            <label>Quantity: </label>
+          <div className="form-group">
+            <label>Quantity</label>
             <input type="number" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} min={1} />
           </div>
-          <button onClick={handleAddProduct}>Confirm</button>
+          <button className="btn-primary" onClick={handleAddProduct}>Confirm</button>
           <button onClick={() => setShowModal(false)}>Cancel</button>
         </div>
       )}
 
       {editingItem && (
-        <div style={{ border: '1px solid black', padding: '10px', margin: '10px 0' }}>
+        <div className="modal">
           <h3>Edit Product: {editingItem.product_name}</h3>
-          <div>
-            <label>Quantity: </label>
+          <div className="form-group">
+            <label>Quantity</label>
             <input type="number" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} min={1} />
           </div>
-          <button onClick={handleEditItem}>Save</button>
+          <button className="btn-primary" onClick={handleEditItem}>Save</button>
           <button onClick={() => setEditingItem(null)}>Cancel</button>
         </div>
       )}
 
       {deleteItemId && (
-        <div style={{ border: '1px solid black', padding: '10px', margin: '10px 0' }}>
+        <div className="modal">
+          <h3>Confirm Remove</h3>
           <p>Are you sure you want to remove this product?</p>
-          <button onClick={handleRemoveItem}>Yes, Remove</button>
+          <button className="btn-danger" onClick={handleRemoveItem}>Yes, Remove</button>
           <button onClick={() => setDeleteItemId(null)}>Cancel</button>
         </div>
       )}
 
       <h3>Products in Order</h3>
-      <table border={1}>
+      <table>
         <thead>
           <tr>
             <th>ID</th>
@@ -243,7 +245,7 @@ export default function AddOrder() {
       </table>
 
       <br />
-      <button onClick={handleSaveOrder}>Done</button>
+      <button className="btn-primary" onClick={handleSaveOrder}>Done</button>
     </div>
   );
 }
