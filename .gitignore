@@ -1,0 +1,25 @@
+# Backend
+backend/__pycache__/
+backend/*.py[cod]
+backend/.env
+backend/venv/
+backend/.venv/
+
+# Frontend (para después)
+frontend/node_modules/
+frontend/.env
+frontend/dist/
+
+# IDE
+.idea/
+.vscode/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docs
+*.pdf
+DOC-20251023-WA0001..pdf
+DEVELOPMENT_GUIDELINES.md
