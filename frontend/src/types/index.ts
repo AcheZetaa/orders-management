@@ -18,3 +18,10 @@ export interface OrderCreate {
   final_price: number;
   status: OrderStatus;
 }
+
+export interface OrderUpdate {
+  order_number?: string;
+  num_products?: number;
+  final_price?: number;
+  status?: OrderStatus;
+}

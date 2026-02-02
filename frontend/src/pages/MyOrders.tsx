@@ -81,6 +81,8 @@ export default function MyOrders() {
                 <td>${Number(order.final_price).toFixed(2)}</td>
                 <td>{order.status}</td>
                 <td>
+                  <Link to={`/edit-order/${order.id}`}>Edit</Link>
+                  {' '}
                   <button onClick={() => setDeleteId(order.id)}>Delete</button>
                 </td>
               </tr>
