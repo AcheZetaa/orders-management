@@ -1,6 +1,8 @@
 from pydantic import BaseModel
-from datetime import date
+from datetime import datetime
+from decimal import Decimal
 from enum import Enum
+from typing import Optional
 
 
 class OrderStatus(str, Enum):
@@ -12,10 +14,13 @@ class OrderStatus(str, Enum):
 class OrderResponse(BaseModel):
     id: int
     order_number: str
-    date: date
+    date: datetime
     num_products: int
-    final_price: float
+    final_price: Decimal
     status: OrderStatus
+    is_deleted: bool
+    created_at: Optional[datetime]
+    updated_at: Optional[datetime]
 
     class Config:
         from_attributes = True

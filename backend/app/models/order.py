@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Date, Float, Enum
+from sqlalchemy import Column, Integer, String, DateTime, Numeric, Enum, Boolean
+from sqlalchemy.sql import func
 from app.core.database import Base
 import enum
 
@@ -14,7 +15,10 @@ class Order(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     order_number = Column(String(50), nullable=False)
-    date = Column(Date, nullable=False)
+    date = Column(DateTime, nullable=False, default=func.now())
     num_products = Column(Integer, default=0)
-    final_price = Column(Float, default=0.0)
+    final_price = Column(Numeric(10, 2), default=0.00)
     status = Column(Enum(OrderStatus), default=OrderStatus.PENDING)
+    is_deleted = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
