@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import type { Order } from '../types';
+import type { Order, OrderStatus } from '../types';
 import orderService from '../services/orderService';
 
 export default function MyOrders() {
@@ -34,6 +34,15 @@ export default function MyOrders() {
       setDeleteId(null);
     } catch {
       setError('Error deleting order');
+    }
+  };
+
+  const handleStatusChange = async (orderId: number, newStatus: OrderStatus) => {
+    try {
+      const updated = await orderService.update(orderId, { status: newStatus });
+      setOrders(orders.map(o => o.id === orderId ? updated : o));
+    } catch {
+      setError('Error updating status');
     }
   };
 
@@ -79,7 +88,16 @@ export default function MyOrders() {
                 <td>{order.date}</td>
                 <td>{order.num_products}</td>
                 <td>${Number(order.final_price).toFixed(2)}</td>
-                <td>{order.status}</td>
+                <td>
+                  <select
+                    value={order.status}
+                    onChange={(e) => handleStatusChange(order.id, e.target.value as OrderStatus)}
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="InProgress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                </td>
                 <td>
                   <Link to={`/edit-order/${order.id}`}>Edit</Link>
                   {' '}
