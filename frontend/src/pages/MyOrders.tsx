@@ -14,6 +14,7 @@ export default function MyOrders() {
   }, []);
 
   const loadOrders = async () => {
+    setError(null);
     try {
       setLoading(true);
       const data = await orderService.getAll();
@@ -27,22 +28,25 @@ export default function MyOrders() {
   };
 
   const handleDelete = async () => {
+    setError(null);
     if (!deleteId) return;
     try {
       await orderService.delete(deleteId);
       setOrders(orders.filter(o => o.id !== deleteId));
       setDeleteId(null);
-    } catch {
-      setError('Error deleting order');
+    } catch (e) {
+      setError('No se puede eliminar una orden completada');
+      console
     }
   };
 
   const handleStatusChange = async (orderId: number, newStatus: OrderStatus) => {
+    setError(null);
     try {
       const updated = await orderService.update(orderId, { status: newStatus });
       setOrders(orders.map(o => o.id === orderId ? updated : o));
     } catch {
-      setError('Error updating status');
+      setError('No se puede actualizar el estado de una orden completada');
     }
   };
 
