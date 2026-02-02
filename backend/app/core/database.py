@@ -4,7 +4,13 @@ from app.core.config import get_settings
 
 settings = get_settings()
 
-engine = create_engine(settings.DATABASE_URL)
+db_url = settings.DATABASE_URL.split('?')[0]
+
+connect_args = {}
+if 'ssl' in settings.DATABASE_URL.lower():
+    connect_args = {"ssl": {"ssl_mode": "REQUIRED"}}
+
+engine = create_engine(db_url, connect_args=connect_args)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
