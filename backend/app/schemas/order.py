@@ -18,6 +18,13 @@ class OrderCreate(BaseModel):
     status: OrderStatus = OrderStatus.PENDING
 
 
+class OrderUpdate(BaseModel):
+    order_number: Optional[str] = None
+    num_products: Optional[int] = None
+    final_price: Optional[Decimal] = None
+    status: Optional[OrderStatus] = None
+
+
 class OrderResponse(BaseModel):
     id: int
     order_number: str

@@ -4,7 +4,7 @@ from typing import List
 
 from app.core.database import get_db
 from app.models.order import Order
-from app.schemas.order import OrderResponse, OrderCreate
+from app.schemas.order import OrderResponse, OrderCreate, OrderUpdate
 
 router = APIRouter()
 
@@ -24,6 +24,26 @@ def create_order(order_data: OrderCreate, db: Session = Depends(get_db)):
         status=order_data.status,
     )
     db.add(order)
+    db.commit()
+    db.refresh(order)
+    return order
+
+
+@router.get("/{order_id}", response_model=OrderResponse)
+def get_order(order_id: int, db: Session = Depends(get_db)):
+    order = db.query(Order).filter(Order.id == order_id, Order.is_deleted == False).first()
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    return order
+
+
+@router.put("/{order_id}", response_model=OrderResponse)
+def update_order(order_id: int, order_data: OrderUpdate, db: Session = Depends(get_db)):
+    order = db.query(Order).filter(Order.id == order_id, Order.is_deleted == False).first()
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    for field, value in order_data.model_dump(exclude_unset=True).items():
+        setattr(order, field, value)
     db.commit()
     db.refresh(order)
     return order
