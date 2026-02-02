@@ -6,6 +6,7 @@ export default function MyOrders() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
 
   useEffect(() => {
     loadOrders();
@@ -24,12 +25,32 @@ export default function MyOrders() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!deleteId) return;
+    try {
+      await orderService.delete(deleteId);
+      setOrders(orders.filter(o => o.id !== deleteId));
+      setDeleteId(null);
+    } catch {
+      setError('Error deleting order');
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
 
   return (
     <div>
       <h1>My Orders</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      {deleteId && (
+        <div style={{ border: '1px solid black', padding: '10px', marginBottom: '10px' }}>
+          <p>Are you sure you want to delete order #{deleteId}?</p>
+          <button onClick={handleDelete}>Yes, Delete</button>
+          <button onClick={() => setDeleteId(null)}>Cancel</button>
+        </div>
+      )}
+
       <table border={1}>
         <thead>
           <tr>
@@ -39,12 +60,13 @@ export default function MyOrders() {
             <th># Products</th>
             <th>Final Price</th>
             <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {orders.length === 0 ? (
             <tr>
-              <td colSpan={6}>No orders found.</td>
+              <td colSpan={7}>No orders found.</td>
             </tr>
           ) : (
             orders.map((order) => (
@@ -53,8 +75,11 @@ export default function MyOrders() {
                 <td>{order.order_number}</td>
                 <td>{order.date}</td>
                 <td>{order.num_products}</td>
-                <td>${order.final_price.toFixed(2)}</td>
+                <td>${Number(order.final_price).toFixed(2)}</td>
                 <td>{order.status}</td>
+                <td>
+                  <button onClick={() => setDeleteId(order.id)}>Delete</button>
+                </td>
               </tr>
             ))
           )}

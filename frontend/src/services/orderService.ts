@@ -6,6 +6,9 @@ export const orderService = {
     const response = await api.get<Order[]>('/orders/');
     return response.data;
   },
+  delete: async (id: number): Promise<void> => {
+    await api.delete(`/orders/${id}`);
+  },
 };
 
 export default orderService;
