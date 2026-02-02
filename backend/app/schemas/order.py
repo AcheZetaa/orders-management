@@ -11,6 +11,13 @@ class OrderStatus(str, Enum):
     COMPLETED = "Completed"
 
 
+class OrderCreate(BaseModel):
+    order_number: str
+    num_products: int = 0
+    final_price: Decimal = Decimal("0.00")
+    status: OrderStatus = OrderStatus.PENDING
+
+
 class OrderResponse(BaseModel):
     id: int
     order_number: str
