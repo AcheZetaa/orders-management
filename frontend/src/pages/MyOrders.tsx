@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import type { Order } from '../types';
 import orderService from '../services/orderService';
 
@@ -41,6 +42,8 @@ export default function MyOrders() {
   return (
     <div>
       <h1>My Orders</h1>
+      <Link to="/add-order">Add Order</Link>
+      <br /><br />
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {deleteId && (

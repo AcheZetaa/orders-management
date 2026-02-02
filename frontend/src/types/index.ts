@@ -11,3 +11,10 @@ export interface Order {
   created_at: string | null;
   updated_at: string | null;
 }
+
+export interface OrderCreate {
+  order_number: string;
+  num_products: number;
+  final_price: number;
+  status: OrderStatus;
+}
