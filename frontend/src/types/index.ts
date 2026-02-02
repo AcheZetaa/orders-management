@@ -6,6 +6,16 @@ export interface Product {
   unit_price: number;
 }
 
+export interface ProductCreate {
+  name: string;
+  unit_price: number;
+}
+
+export interface ProductUpdate {
+  name?: string;
+  unit_price?: number;
+}
+
 export interface OrderItem {
   id: number;
   product_id: number;
